@@ -5,7 +5,6 @@ const UserSchema = new mongoose.Schema({
     username:{
         type: String,
         required: [true, 'Please enter username']
-
     },
     email:{
         type: String,
@@ -14,6 +13,21 @@ const UserSchema = new mongoose.Schema({
         validate: function(value) {
             return emailRegex.test(value);
         }
+    },
+    password:{
+        type: String,
+        required: [true, 'Please enter password'],
+        encrypt: true,
+    },
+    created_at:{
+        type: Date,
+        default: Date.now,
+        required: true
+    },
+    updated_at:{
+        type: Date,
+        default: Date.now,
+        required: true
     }
 })
 
