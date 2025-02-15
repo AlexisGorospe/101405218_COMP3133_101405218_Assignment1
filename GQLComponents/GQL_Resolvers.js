@@ -56,6 +56,19 @@ exports.resolvers = {
             return emps
         },
 
+        
+        userLogIn: async(parent, args) => { //2
+            console.log(`lets look for ${args.username} to see if they are in the database`);
+            try{
+                const user_list = await User.find()
+                console.log(user_list)
+                
+                return JSON.stringify({message: "ur logged in now :)"})
+            }
+            catch{
+                return JSON.stringify({message: "login failed"})
+            }
+        },
     },
 
     Mutation: {

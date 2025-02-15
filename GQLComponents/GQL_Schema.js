@@ -22,8 +22,6 @@ exports.typeDefs = gql `
         employee_photo: String!
         created_at: Date
         updated_at: Date
-
-
     }
     
     #this is a user object
@@ -45,6 +43,8 @@ exports.typeDefs = gql `
         getEmployeeByDepartment(department: String!): [Employee]
         getEmployeeByFirstName(name: String!): [Employee]
         getEmployeeByID(id: ID!): Employee
+
+        userLogIn(username: String!, password: String!): User
     }
     type Mutation {
         addEmployee(
