@@ -13,6 +13,9 @@
     "graphpack": "^1.0.9"
   },
   "dependencies": {
-    "express-validator": "^7.2.1"
+    "dotenv": "^16.4.7",
+    "express-validator": "^7.2.1",
+    "graphql": "^14.1.1",
+    "mongoose": "^8.10.0"
   }
 }

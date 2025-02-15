@@ -17,17 +17,15 @@ const UserSchema = new mongoose.Schema({
     password:{
         type: String,
         required: [true, 'Please enter password'],
-        encrypt: true,
+        //encrypt: true,
     },
     created_at:{
         type: Date,
         default: Date.now,
-        required: true
     },
     updated_at:{
         type: Date,
         default: Date.now,
-        required: true
     }
 })
 

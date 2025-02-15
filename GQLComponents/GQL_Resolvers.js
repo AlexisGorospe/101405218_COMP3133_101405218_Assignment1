@@ -1,24 +1,36 @@
 const { emailRegex } = require('../constants');
 const Employee = require('../models/Employee')
+const User = require("../models/User")
 
 // This file will contain all GraphQL Resolvers
 // Resolvers perform operations to complete the types defined in typedefs.
 
 exports.resolvers = {
     Query:{
-        getEmployees: async(parent, args) => {
+        getEmployees: async(parent, args) => { //3
             console.log(`fetching all employees...`)
             return await Employee.find({})
         },
-        getEmployeeByCity: async(parent, args) => {
-            console.log(`Fetching all employees from city : ${args.city}`);
-            
-            const emps =  await Employee.find({city: new RegExp(args.city, 'i')})
+        
+        getEmployeeByDesignation: async(parent, args) => { //8
+            console.log(`Fetching all employees with designation : ${args.designation}`);
+
+            const emps =  await Employee.find({designation: new RegExp(args.designation, 'i')})
             console.log(`matching employees : ${JSON.stringify(emps)}`);
-            
+
             return emps
         },
-        getEmployeeByFirstName: async(parent, args) => {
+
+        getEmployeeByDepartment: async(parent, args) => { //8
+            console.log(`Fetching all employees with department : ${args.department}`);
+
+            const emps =  await Employee.find({department: new RegExp(args.department, 'i')})
+            console.log(`matching employees : ${JSON.stringify(emps)}`);
+
+            return emps
+        },
+
+        getEmployeeByFirstName: async(parent, args) => { //not included
             console.log(`Fetching all employees with the firstname: ${args.firstname}`);
             
             const emps =  await Employee.find({firstname: new RegExp(args.firstname, 'i')})
@@ -26,7 +38,7 @@ exports.resolvers = {
             
             return emps
         },
-        getEmployeeByID: async(parent, args) => {
+        getEmployeeByID: async(parent, args) => { //5
             console.log(`Fetching all employees with the ID: ${args.id}`);
             
             const emps =  await Employee.findById({id: args.id})
@@ -34,10 +46,20 @@ exports.resolvers = {
             
             return emps
         },
+
+        getEmployeeByID: async(parent, args) => { //5
+            console.log(`Fetching all employees with the ID: ${args.id}`);
+            
+            const emps =  await Employee.findById({id: args.id})
+            console.log(`matching employees : ${JSON.stringify(emps)}`);
+            
+            return emps
+        },
+
     },
 
     Mutation: {
-        addEmployee: async(parent, args) => {
+        addEmployee: async(parent, args) => { // 4
             console.log(`trying to insert employee with email ${args.email}`);
 
             let genderToAdd = args.gender
@@ -50,7 +72,7 @@ exports.resolvers = {
                 firstname: args.firstname,
                 lastname: args.lastname,
                 email: args.email,
-                gender: args.gender.toLowerCase(),
+                gender: genderToAdd,
                 city: args.city,
                 designation: args.designation,
                 salary: args.salary
@@ -58,7 +80,7 @@ exports.resolvers = {
 
             return await newEmp.save()
         },
-        updateEmployee: async(parent, args) => {
+        updateEmployee: async(parent, args) => { //6
             if (!args.id){
                 console.log(`ID not provided`);
                 return JSON.stringify({
@@ -75,7 +97,7 @@ exports.resolvers = {
                 genderToAdd = args.gender.toLowerCase()
             }
 
-            return await Employee.findOneAndUpdate(
+            return Employee.findOneAndUpdate(
                 { _id: args.id },
                 {
                     $set: {
@@ -101,7 +123,7 @@ exports.resolvers = {
             )
             
         },
-        deleteEmployee: async(parent, args) => {
+        deleteEmployee: async(parent, args) => { //7
             if (!args.id){
                 console.log(`ID not provided`);
                 return JSON.stringify({
@@ -112,5 +134,17 @@ exports.resolvers = {
 
             return await Employee.findOneAndDelete(args.id)
         },
+
+        userSignUp: async(parent, args) => { //1
+            console.log("trying to add your user...");
+
+            let newUser = new User({
+                username: args.username,
+                email: args.email,
+                password: args.password,
+            })
+
+            return await newUser.save()
+        }
     }
 }

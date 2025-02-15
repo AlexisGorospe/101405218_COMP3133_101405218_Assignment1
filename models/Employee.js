@@ -50,7 +50,6 @@ const EmployeeSchema = new mongoose.Schema({
   date_of_joining: {
     type: Date,
     default: Date.now,
-    alias: 'createdAt'
   },
   department: {
     type: String,
@@ -65,12 +64,10 @@ const EmployeeSchema = new mongoose.Schema({
   created_at: {
     type: Date,
     default: Date.now,
-    alias: 'createdAt'
   },
   updated_at: {
     type: Date,
     default: Date.now,
-    alias: 'updatedAt'
   },
 });
 
