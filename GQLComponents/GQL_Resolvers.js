@@ -31,9 +31,9 @@ exports.resolvers = {
         },
 
         getEmployeeByFirstName: async(parent, args) => { //not included
-            console.log(`Fetching all employees with the firstname: ${args.firstname}`);
+            console.log(`Fetching all employees with the firstname: ${args.first_name}`);
             
-            const emps =  await Employee.find({firstname: new RegExp(args.firstname, 'i')})
+            const emps =  await Employee.find({first_name: new RegExp(args.first_name, 'i')})
             console.log(`matching employees : ${JSON.stringify(emps)}`);
             
             return emps
@@ -41,16 +41,7 @@ exports.resolvers = {
         getEmployeeByID: async(parent, args) => { //5
             console.log(`Fetching all employees with the ID: ${args.id}`);
             
-            const emps =  await Employee.findById({id: args.id})
-            console.log(`matching employees : ${JSON.stringify(emps)}`);
-            
-            return emps
-        },
-
-        getEmployeeByID: async(parent, args) => { //5
-            console.log(`Fetching all employees with the ID: ${args.id}`);
-            
-            const emps =  await Employee.findById({id: args.id})
+            const emps =  await Employee.findById({_id: args.id})
             console.log(`matching employees : ${JSON.stringify(emps)}`);
             
             return emps
@@ -61,34 +52,44 @@ exports.resolvers = {
             console.log(`lets look for ${args.username} to see if they are in the database`);
             try{
                 const user_list = await User.find()
-                console.log(user_list)
-                
-                return JSON.stringify({message: "ur logged in now :)"})
+                console.log(user_list)  
+
+                for (let i = 0; i < user_list.length; i++){
+                    //get the username and password
+                    if (user_list[i]["username"] == args.username  && user_list[i]["password"] == args.password){
+                        return {message: "ur logged in now :)"}
+                    }
+                }
+                return {message: "login failed"}
             }
             catch{
-                return JSON.stringify({message: "login failed"})
+                return {message: "login failed"}
             }
         },
     },
 
     Mutation: {
-        addEmployee: async(parent, args) => { // 4
+        addEmployee: async(parent, args) => { //4
             console.log(`trying to insert employee with email ${args.email}`);
 
             let genderToAdd = args.gender
 
             if (args.gender !== "2SLGBTQQIA"){
                 genderToAdd = args.gender.toLowerCase()
-            }
+            } 
+
+            const date = new Date();
 
             let newEmp = new Employee({
-                firstname: args.firstname,
-                lastname: args.lastname,
+                first_name: args.first_name,
+                last_name: args.last_name,
                 email: args.email,
                 gender: genderToAdd,
                 city: args.city,
                 designation: args.designation,
-                salary: args.salary
+                salary: args.salary,
+                department: args.department,
+                employee_photo: args.employee_photo,
             })
 
             return await newEmp.save()
@@ -114,13 +115,13 @@ exports.resolvers = {
                 { _id: args.id },
                 {
                     $set: {
-                        firstname : args.firstname,
-                        lastname : args.lastname,
+                        first_name : args.first_name,
+                        last_name : args.last_name,
 
                         gender : genderToAdd,
                         city : args.city,
                         designation : args.designation,
-                        salary : args.salary
+                        salary : args.salary,
                     }
                 },
                 {new: false},

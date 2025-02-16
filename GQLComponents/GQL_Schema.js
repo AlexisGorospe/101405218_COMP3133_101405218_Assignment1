@@ -10,8 +10,8 @@ exports.typeDefs = gql `
     #this is an employee object
     type Employee{
         id: ID!
-        firstname: String!
-        lastname: String!
+        first_name: String!
+        last_name: String!
         email: String!
         gender: String!
         city: String!
@@ -44,18 +44,26 @@ exports.typeDefs = gql `
         getEmployeeByFirstName(name: String!): [Employee]
         getEmployeeByID(id: ID!): Employee
 
-        userLogIn(username: String!, password: String!): User
+        userLogIn(username: String!, password: String!): LoginResponse
     }
+
+    type LoginResponse{
+        pass: Boolean!
+        message: String
+        token: String
+    }
+
+
     type Mutation {
         addEmployee(
-            firstname : String!
-            lastname : String!
+            first_name : String!
+            last_name : String!
             email : String!
             gender : String!
             city : String!
             designation : String!
             salary : Float!
-            date_of_joining: Date!
+            date_of_joining: String!
             department: String!
             employee_photo: String!
             created_at: String!
@@ -64,8 +72,8 @@ exports.typeDefs = gql `
 
         updateEmployee(
             id : ID!
-            firstname : String!
-            lastname : String!
+            first_name : String!
+            last_name : String!
             email : String!
             gender : String!
             city : String!

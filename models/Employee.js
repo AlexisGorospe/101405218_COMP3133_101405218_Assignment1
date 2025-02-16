@@ -2,12 +2,12 @@ const mongoose = require('mongoose');
 const emailRegex  = require('../constants');
 
 const EmployeeSchema = new mongoose.Schema({
-  firstname: {
+  first_name: {
     type: String,
     required: [true, 'Please enter first name'],
     trim: true
   },
-  lastname: {
+  last_name: {
     type: String,
     alias: 'surname',
     required: true,
@@ -62,12 +62,10 @@ const EmployeeSchema = new mongoose.Schema({
     trim: true
   },
   created_at: {
-    type: Date,
-    default: Date.now,
+    type: String,
   },
   updated_at: {
-    type: Date,
-    default: Date.now,
+    type: String,
   },
 });
 
